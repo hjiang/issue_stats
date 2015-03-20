@@ -13,7 +13,7 @@ app.get('/hello', function(req, res) {
 });
 
 app.post('/issue_webhook', function(req, res) {
-  console.dir(req);
+  console.dir(req.body);
   res.render('hello', { message: 'Congrats, you just set up your app!' });
 });
 
