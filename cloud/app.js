@@ -14,6 +14,7 @@ app.get('/hello', function(req, res) {
 
 app.get('/issue_webhook', function(req, res) {
   console.dir(req);
+  res.render('hello', { message: 'Congrats, you just set up your app!' });
 });
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
