@@ -21,10 +21,12 @@ app.get('/hello', function(req, res) {
 
 app.post('/issue_webhook', function(req, res) {
   console.dir(req.body);
-  var action = req.body.action;
   if (!req.body.hasOwnProperty('action')) {
+    console.log('request has no action');
     res.status(400).end();
   } else {
+    var action = req.body.action;
+    console.log('action:', action);
     if (action === 'opened' || action === 'closed') {
       var date = Date.today();
       var query = new AV.Query(GlobalCount);
@@ -32,10 +34,12 @@ app.post('/issue_webhook', function(req, res) {
       query.equalTo('action', action);
       query.first({
         success: function(gcount) {
+          console.log('success', gcount);
           gcount.increment('count');
           gcount.save();
         },
         error: function(error) {
+          console.log('error', error);
           var gcount = new GlobalCount();
           gcount.set('action', action);
           gcount.set('count', 0);
