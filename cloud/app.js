@@ -23,7 +23,7 @@ app.post('/issue_webhook', function(req, res) {
   console.dir(req.body);
   if (!req.body.hasOwnProperty('action')) {
     console.log('request has no action');
-    res.status(400).end();
+    res.status(200).end();
   } else {
     var action = req.body.action;
     console.log('action:', action);
