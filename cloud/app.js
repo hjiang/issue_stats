@@ -29,21 +29,29 @@ app.post('/issue_webhook', function(req, res) {
     console.log('action:', action);
     if (action === 'opened' || action === 'closed') {
       console.log('Recording count:', action);
-      var date = Date.today();
+      var date = new Date().setHours(0, 0, 0, 0);
       var query = new AV.Query(GlobalCount);
       query.equalTo('date', date);
       query.equalTo('action', action);
       query.first({
         success: function(gcount) {
           console.log('success', gcount);
-          gcount.increment('count');
+          if (!gcount) {
+            gcount = new GlobalCount();
+            gcount.set('action', action);
+            gcount.set('date', date);
+            gcount.set('count', 1);
+          } else {
+            gcount.increment('count');
+          }
           gcount.save();
         },
         error: function(error) {
           console.log('error', error);
           var gcount = new GlobalCount();
           gcount.set('action', action);
-          gcount.set('count', 0);
+          gcount.set('date', date);
+          gcount.set('count', 1);
           gcount.save();
         }   
       });
