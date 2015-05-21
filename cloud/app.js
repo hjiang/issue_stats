@@ -28,6 +28,7 @@ app.post('/issue_webhook', function(req, res) {
     var action = req.body.action;
     console.log('action:', action);
     if (action === 'opened' || action === 'closed') {
+      console.log('Recording count:', action);
       var date = Date.today();
       var query = new AV.Query(GlobalCount);
       query.equalTo('date', date);
