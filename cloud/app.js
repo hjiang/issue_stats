@@ -2,8 +2,6 @@
 
 'use strict';
 
-require('date-utils');
-
 var express = require('express');
 var app = express();
 
@@ -24,7 +22,8 @@ app.post('/issue_webhook', function(req, res) {
   } else {
     var action = req.body.action;
     console.log('action:', action);
-    var date = new Date().setHours(0, 0, 0, 0);
+    var date = new Date();
+    date.setHours(0, 0, 0, 0);
     var query = new AV.Query(GlobalCount);
     query.equalTo('date', date);
     query.equalTo('action', action);
