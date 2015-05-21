@@ -1,0 +1,9 @@
+{
+  "name": "issue-stats",
+  "description": "GitHub Issue Stats",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "date-utils": "^1.2.16"
+  }
+}
