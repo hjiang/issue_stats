@@ -56,6 +56,8 @@ app.post('/issue_webhook', function(req, res) {
         }   
       });
       res.status(200).end();
+    } else {
+      res.status(200).end();
     }
   }
 });
