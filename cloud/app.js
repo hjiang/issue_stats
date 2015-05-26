@@ -25,7 +25,7 @@ function processForChart(results) {
       closes = [];
   
   _.each(results, function(result){
-      var date = result.get('date');
+      var date = moment(result.get('date')).format('YYYY-MM-DD');
       var action = result.get('action');
       var count = result.get('count');
       if (next !== action) {
@@ -36,7 +36,7 @@ function processForChart(results) {
         }
       }
       console.log('----');
-      if (_.isEmpty(dates) || !isSameDate(_.last(dates), date)) {
+      if (_.isEmpty(dates) || _.last(dates) !== date) {
         console.log('pushing date');
         dates.push(date);
       }
@@ -55,11 +55,6 @@ function processForChart(results) {
 function returnJSON(res, obj) {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(obj)).end();
-}
-
-function isSameDate(d1, d2) {
-  return d1.getYear() === d2.getYear() && d1.getMonth() === d2.getMonth() &&
-      d1.getDate() === d2.getDate();
 }
 
 function trace(obj) {
