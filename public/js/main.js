@@ -10,20 +10,20 @@ $(function() {
 				{
 					label: 'Opens',
 					data: data.opens,
-					strokeColor: "rgba(220,220,220,1)",
-					pointColor: "rgba(220,220,220,1)",
+					strokeColor: "rgba(250, 105, 0, 1)",
+					pointColor: "rgba(250, 105, 0, 1)",
 					pointStrokeColor: "#fff",
 					pointHighlightFill: "#fff",
-					pointHighlightStroke: "rgba(220,220,220,1)",
+					pointHighlightStroke: "rgba(250, 105, 0, 1)",
 				},
 				{
 					label: 'Closes',
 					data: data.closes,
-					strokeColor: "rgba(151,187,205,1)",
-					pointColor: "rgba(151,187,205,1)",
+					strokeColor: "rgba(167, 219, 216, 1)",
+					pointColor: "rgba(167, 219, 216, 1)",
 					pointStrokeColor: "#fff",
 					pointHighlightFill: "#fff",
-					pointHighlightStroke: "rgba(151,187,205,1)",
+					pointHighlightStroke: "rgba(167, 219, 216, 1)",
 				}
 			]
 		};
