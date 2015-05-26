@@ -4,5 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "moment": "^2.10.3",
+    "underscore": "^1.8.3"
   }
 }

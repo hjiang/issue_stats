@@ -2,6 +2,9 @@
 
 'use strict';
 
+var moment = require('moment');
+var _ = require('underscore');
+
 var express = require('express');
 var app = express();
 
@@ -13,6 +16,76 @@ var GlobalCount = AV.Object.extend('GlobalCount');
 
 app.get('/hello', function(req, res) {
   res.render('hello', { message: 'Congrats, you just set up your app!' });
+});
+
+function processForChart(results) {
+  var next = 'closed',
+      dates = [],
+      opens = [],
+      closes = [];
+  
+  _.each(results, function(result){
+      var date = result.get('date');
+      var action = result.get('action');
+      var count = result.get('count');
+      if (next !== action) {
+        if (next === 'opened') {
+          opens.push(0);
+        } else {
+          closes.push(0);
+        }
+      }
+      console.log('----');
+      if (_.isEmpty(dates) || !isSameDate(_.last(dates), date)) {
+        console.log('pushing date');
+        dates.push(date);
+      }
+      console.log('----')
+      if (action === 'opened') {
+        opens.push(count);
+        next = 'closed';
+      } else {
+        closes.push(count);
+        next = 'opened';
+      }
+  });
+  return {dates: dates, opens: opens, closes: closes};
+}
+
+function returnJSON(res, obj) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(obj)).end();
+}
+
+function isSameDate(d1, d2) {
+  return d1.getYear() === d2.getYear() && d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate();
+}
+
+function trace(obj) {
+  console.log(obj);
+  return obj;
+}
+
+app.get('/issue_data.json', function(req, res) {
+  var recent = new AV.Query(GlobalCount);
+  recent.greaterThan('date', new Date(moment().subtract(30, 'days')));
+  var opens = new AV.Query(GlobalCount);
+  opens.equalTo('action', 'opened');
+  var closes = new AV.Query(GlobalCount);
+  closes.equalTo('action', 'closed');
+  var query = AV.Query.and(recent, AV.Query.or(opens, closes));
+  query.ascending('date');
+  query.addAscending('action');
+  query.find({
+    success: function(results) {
+      returnJSON(res, processForChart(results));
+    },
+    error: function(error) {
+      console.error(error);
+      res.status(500).end();
+    }
+  });
 });
 
 app.post('/issue_webhook', function(req, res) {
